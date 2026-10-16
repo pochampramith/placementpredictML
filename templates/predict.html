@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Predict{% endblock %}
+{% block page_title %}Predict Placement{% endblock %}
+
+{% block content %}
+<div class="panel" style="max-width: 780px;">
+  <h6>Predict Placement</h6>
+  <p class="text-muted small mb-4">Enter student details below</p>
+
+  <form method="POST" action="{{ url_for('predict_result') }}">
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">CGPA (out of 10)</label>
+        <input type="number" step="0.01" min="0" max="10" class="form-control" name="cgpa" value="8.45" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Soft Skills Rating (out of 10)</label>
+        <input type="number" step="0.1" min="0" max="10" class="form-control" name="soft_skills" value="8" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Internships</label>
+        <input type="number" min="0" class="form-control" name="internships" value="2" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Backlogs</label>
+        <input type="number" min="0" class="form-control" name="backlogs" value="0" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Projects</label>
+        <input type="number" min="0" class="form-control" name="projects" value="3" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Extra Curricular Activities (out of 10)</label>
+        <input type="number" step="0.1" min="0" max="10" class="form-control" name="extra_curricular" value="7" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Aptitude Test Score (out of 100)</label>
+        <input type="number" min="0" max="100" class="form-control" name="aptitude" value="78" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Communication Skills (out of 10)</label>
+        <input type="number" step="0.1" min="0" max="10" class="form-control" name="communication" value="8" required>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-purple w-100 mt-4">
+      <i class="bi bi-search"></i> Predict Now
+    </button>
+  </form>
+</div>
+{% endblock %}

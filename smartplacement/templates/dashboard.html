@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+<h4 class="fw-bold mb-1">Welcome to SmartPlacement</h4>
+<p class="text-muted mb-4">Student Placement Prediction System</p>
+
+<div class="row g-3 mb-3">
+  <div class="col-md-3">
+    <div class="stat-card">
+      <div class="stat-icon icon-blue"><i class="bi bi-people-fill"></i></div>
+      <div>
+        <div class="stat-value">{{ "{:,}".format(stats.total) }}</div>
+        <div class="stat-label">Total Students</div>
+        <div class="stat-sub">Dataset Size</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="stat-card">
+      <div class="stat-icon icon-green"><i class="bi bi-check-circle-fill"></i></div>
+      <div>
+        <div class="stat-value">{{ "{:,}".format(stats.placed) }}</div>
+        <div class="stat-label">Placed Students</div>
+        <div class="stat-sub">{{ stats.placed_pct }}%</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="stat-card">
+      <div class="stat-icon icon-red"><i class="bi bi-x-circle-fill"></i></div>
+      <div>
+        <div class="stat-value">{{ "{:,}".format(stats.not_placed) }}</div>
+        <div class="stat-label">Not Placed Students</div>
+        <div class="stat-sub">{{ stats.not_placed_pct }}%</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="stat-card">
+      <div class="stat-icon icon-purple"><i class="bi bi-currency-rupee"></i></div>
+      <div>
+        <div class="stat-value">₹{{ stats.avg_salary }} LPA</div>
+        <div class="stat-label">Avg. Salary (Placed)</div>
+        <div class="stat-sub">Estimated</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3 mb-3">
+  <div class="col-md-5">
+    <div class="panel">
+      <h6>Placement Status Distribution</h6>
+      <canvas id="statusChart" height="220"></canvas>
+    </div>
+  </div>
+  <div class="col-md-7">
+    <div class="panel">
+      <h6>Salary Distribution (Placed Students)</h6>
+      <canvas id="salaryChart" height="220"></canvas>
+    </div>
+  </div>
+</div>
+
+<div class="info-box">
+  <i class="bi bi-info-circle-fill"></i>
+  <div>
+    <strong>About the System</strong><br>
+    This system uses Machine Learning models to predict whether a student will be Placed or Not Placed,
+    and also estimates the Expected Salary (in LPA) based on academic and skill parameters.
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+new Chart(document.getElementById('statusChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Placed ({{ stats.placed_pct }}%)', 'Not Placed ({{ stats.not_placed_pct }}%)'],
+    datasets: [{
+      data: [{{ stats.placed }}, {{ stats.not_placed }}],
+      backgroundColor: ['#22a559', '#e0483f'],
+      borderWidth: 0
+    }]
+  },
+  options: { plugins: { legend: { position: 'bottom' } }, cutout: '65%' }
+});
+
+new Chart(document.getElementById('salaryChart'), {
+  type: 'bar',
+  data: {
+    labels: {{ stats.salary_labels|tojson }},
+    datasets: [{
+      label: 'No. of Students',
+      data: {{ stats.salary_dist|tojson }},
+      backgroundColor: '#a48ce8',
+      borderRadius: 6
+    }]
+  },
+  options: {
+    plugins: { legend: { display: false } },
+    scales: { y: { beginAtZero: true, title: { display: true, text: 'No. of Students' } },
+              x: { title: { display: true, text: 'Salary (in LPA)' } } }
+  }
+});
+</script>
+{% endblock %}

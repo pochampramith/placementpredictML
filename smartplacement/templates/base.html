@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartPlacement | {% block title %}{{ active|capitalize }}{% endblock %}</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <i class="bi bi-mortarboard-fill"></i>
+      <span>SmartPlacement</span>
+    </div>
+    <nav class="nav flex-column">
+      <a class="nav-link {{ 'active' if active=='dashboard' }}" href="{{ url_for('dashboard') }}">
+        <i class="bi bi-house-door-fill"></i> Dashboard
+      </a>
+      <a class="nav-link {{ 'active' if active=='predict' }}" href="{{ url_for('predict_form') }}">
+        <i class="bi bi-graph-up-arrow"></i> Predict
+      </a>
+      <a class="nav-link {{ 'active' if active=='students' }}" href="{{ url_for('students') }}">
+        <i class="bi bi-people-fill"></i> Students
+      </a>
+      <a class="nav-link {{ 'active' if active=='analytics' }}" href="{{ url_for('analytics') }}">
+        <i class="bi bi-bar-chart-fill"></i> Analytics
+      </a>
+      <a class="nav-link {{ 'active' if active=='about' }}" href="{{ url_for('about') }}">
+        <i class="bi bi-info-circle-fill"></i> About
+      </a>
+      <a class="nav-link {{ 'active' if active=='help' }}" href="{{ url_for('help_page') }}">
+        <i class="bi bi-question-circle-fill"></i> Help
+      </a>
+    </nav>
+  </aside>
+
+  <div class="main-area">
+    <header class="topbar">
+      <h5 class="mb-0">{% block page_title %}{{ active|capitalize }}{% endblock %}</h5>
+      <div class="admin-pill"><i class="bi bi-person-circle"></i> Admin</div>
+    </header>
+    <main class="content">
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

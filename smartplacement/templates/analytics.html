@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}Analytics{% endblock %}
+{% block page_title %}Analytics{% endblock %}
+
+{% block content %}
+<h6 class="fw-bold mb-3">Insights from the dataset</h6>
+
+<div class="row g-3 mb-3">
+  <div class="col-md-4">
+    <div class="stat-card">
+      <div class="stat-icon icon-blue"><i class="bi bi-mortarboard-fill"></i></div>
+      <div>
+        <div class="stat-value">{{ stats.avg_cgpa }}</div>
+        <div class="stat-label">Avg. CGPA (Placed)</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="stat-card">
+      <div class="stat-icon icon-green"><i class="bi bi-check-circle-fill"></i></div>
+      <div>
+        <div class="stat-value">{{ stats.placement_rate }}%</div>
+        <div class="stat-label">Placement Rate</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="stat-card">
+      <div class="stat-icon icon-orange"><i class="bi bi-award-fill"></i></div>
+      <div>
+        <div class="stat-value">{{ stats.avg_aptitude }}</div>
+        <div class="stat-label">Avg. Aptitude Score</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-md-7">
+    <div class="panel">
+      <h6>Placement Rate by CGPA Range</h6>
+      <canvas id="cgpaChart" height="200"></canvas>
+    </div>
+  </div>
+  <div class="col-md-5">
+    <div class="panel">
+      <h6>Placement by Branch</h6>
+      <canvas id="branchChart" height="200"></canvas>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+new Chart(document.getElementById('cgpaChart'), {
+  type: 'bar',
+  data: {
+    labels: {{ stats.cgpa_labels|tojson }},
+    datasets: [{
+      label: 'Placement Rate (%)',
+      data: {{ stats.rate_by_cgpa|tojson }},
+      backgroundColor: '#4a63e7',
+      borderRadius: 6
+    }]
+  },
+  options: {
+    plugins: { legend: { display: false } },
+    scales: { y: { beginAtZero: true, max: 100, title: { display: true, text: 'Placement Rate (%)' } } }
+  }
+});
+
+new Chart(document.getElementById('branchChart'), {
+  type: 'pie',
+  data: {
+    labels: {{ stats.branch_labels|tojson }},
+    datasets: [{
+      data: {{ stats.branch_values|tojson }},
+      backgroundColor: ['#4a63e7', '#22a559', '#e0483f', '#a48ce8', '#f5a623']
+    }]
+  },
+  options: { plugins: { legend: { position: 'bottom' } } }
+});
+</script>
+{% endblock %}

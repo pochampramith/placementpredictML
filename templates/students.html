@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Students{% endblock %}
+{% block page_title %}Students{% endblock %}
+
+{% block content %}
+<div class="panel">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+      <h6 class="mb-0">Students</h6>
+      <p class="text-muted small mb-0">Browse all student records</p>
+    </div>
+    <form class="d-flex gap-2" method="GET" action="{{ url_for('students') }}">
+      <input type="text" name="q" class="form-control form-control-sm" placeholder="Search students..." value="{{ search }}">
+      <button class="btn btn-sm btn-purple"><i class="bi bi-filter"></i> Filter</button>
+    </form>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>#</th><th>Name</th><th>Branch</th><th>CGPA</th><th>Placed</th><th>Salary (LPA)</th><th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in rows %}
+        <tr>
+          <td>{{ row.ID }}</td>
+          <td>{{ row.Name }}</td>
+          <td>{{ row.Branch }}</td>
+          <td>{{ row.CGPA }}</td>
+          <td>
+            {% if row.Placed == 1 %}
+              <span class="status-pill status-yes">Yes</span>
+            {% else %}
+              <span class="status-pill status-no">No</span>
+            {% endif %}
+          </td>
+          <td>{{ row.Salary_LPA if row.Placed == 1 else '-' }}</td>
+          <td><a href="#" class="text-decoration-none small">View</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <nav class="d-flex justify-content-center mt-3">
+    <ul class="pagination pagination-sm">
+      <li class="page-item {{ 'disabled' if page <= 1 }}">
+        <a class="page-link" href="{{ url_for('students', page=page-1, q=search) }}">&lsaquo;</a>
+      </li>
+      {% for p in range(1, total_pages+1) %}
+        {% if p <= 5 or p == total_pages %}
+        <li class="page-item {{ 'active' if p == page }}">
+          <a class="page-link" href="{{ url_for('students', page=p, q=search) }}">{{ p }}</a>
+        </li>
+        {% endif %}
+      {% endfor %}
+      <li class="page-item {{ 'disabled' if page >= total_pages }}">
+        <a class="page-link" href="{{ url_for('students', page=page+1, q=search) }}">&rsaquo;</a>
+      </li>
+    </ul>
+  </nav>
+</div>
+{% endblock %}

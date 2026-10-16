@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Prediction Result{% endblock %}
+{% block page_title %}Prediction Result{% endblock %}
+
+{% block content %}
+<div class="row g-3">
+  <div class="col-lg-7">
+    <div class="result-banner {{ 'result-placed' if placed else 'result-not-placed' }}">
+      <div class="row">
+        <div class="col-6">
+          <div class="text-muted small mb-1">Placement Status</div>
+          <div class="badge-status {{ 'placed' if placed else 'not-placed' }}">
+            <i class="bi {{ 'bi-check-circle-fill' if placed else 'bi-x-circle-fill' }}"></i>
+            {{ 'PLACED' if placed else 'NOT PLACED' }}
+          </div>
+        </div>
+        <div class="col-6 border-start">
+          <div class="text-muted small mb-1">Estimated Salary</div>
+          <div class="badge-status" style="color:#333;">
+            ₹ {{ salary if placed else '--' }} {{ 'LPA' if placed }}
+          </div>
+          {% if placed %}<div class="text-muted small">(Expected)</div>{% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="panel mt-3">
+      <h6>Prediction Probabilities</h6>
+      <div class="mb-2 d-flex justify-content-between small">
+        <span>Placed</span><span>{{ placed_prob }}%</span>
+      </div>
+      <div class="progress mb-3">
+        <div class="progress-bar progress-bar-green" style="width: {{ placed_prob }}%"></div>
+      </div>
+      <div class="mb-2 d-flex justify-content-between small">
+        <span>Not Placed</span><span>{{ not_placed_prob }}%</span>
+      </div>
+      <div class="progress">
+        <div class="progress-bar progress-bar-red" style="width: {{ not_placed_prob }}%"></div>
+      </div>
+    </div>
+
+    <div class="info-box mt-3">
+      <i class="bi bi-star-fill"></i>
+      <div>
+        {% if placed %}
+          Great! The student is likely to be <strong>Placed</strong> with an estimated salary of ₹{{ salary }} LPA.
+        {% else %}
+          The student profile suggests a <strong>lower chance of placement</strong>. Consider improving CGPA, projects, or clearing backlogs.
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-5">
+    <div class="panel">
+      <h6>Input Summary</h6>
+      <table class="table table-sm mb-0">
+        <tbody>
+          <tr><td class="text-muted">CGPA</td><td class="text-end fw-semibold">{{ inputs.CGPA }}</td></tr>
+          <tr><td class="text-muted">Internships</td><td class="text-end fw-semibold">{{ inputs.Internships }}</td></tr>
+          <tr><td class="text-muted">Projects</td><td class="text-end fw-semibold">{{ inputs.Projects }}</td></tr>
+          <tr><td class="text-muted">Aptitude Score</td><td class="text-end fw-semibold">{{ inputs.Aptitude_Score }}</td></tr>
+          <tr><td class="text-muted">Soft Skills Rating</td><td class="text-end fw-semibold">{{ inputs.Soft_Skills_Rating }}</td></tr>
+          <tr><td class="text-muted">Backlogs</td><td class="text-end fw-semibold">{{ inputs.Backlogs }}</td></tr>
+          <tr><td class="text-muted">Extra Curricular</td><td class="text-end fw-semibold">{{ inputs.Extra_Curricular_Activities }}</td></tr>
+          <tr><td class="text-muted">Communication Skills</td><td class="text-end fw-semibold">{{ inputs.Communication_Skills }}</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <a href="{{ url_for('predict_form') }}" class="btn btn-outline-secondary w-100 mt-3">
+      <i class="bi bi-arrow-left"></i> Try Another Prediction
+    </a>
+  </div>
+</div>
+{% endblock %}
