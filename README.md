@@ -55,3 +55,4 @@ smartplacement/
 ├── templates/  (dashboard, predict, result, students, analytics, about, help)
 └── static/css/style.css
 ```
+"# placementpredictML" 
